@@ -29,7 +29,7 @@ import os
 import time
 import sys, traceback
 from serial.serialutil import SerialException
-from bupigo_msgs import Blobs, Blob
+#from bupigo_msgs.msg import Blobs, Blob
 from serial import Serial
 
 SERVO_MAX = 180

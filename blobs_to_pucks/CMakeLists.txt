@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(bupigo_msgs)
+project(blobs_to_pucks)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS message_generation rospy std_msgs)
+find_package(catkin REQUIRED COMPONENTS
+  bupigo_msgs
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -40,16 +42,11 @@ find_package(catkin REQUIRED COMPONENTS message_generation rospy std_msgs)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
-   Blob.msg
-   Blobs.msg
-   WheelSpeeds.msg
-#   Puck.msg
-#   PuckArray.msg
-#   Cluster.msg
-#   ClusterArray.msg
-)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -66,11 +63,10 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
-  #geometry_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   bupigo_msgs
+# )
 
 ###################################
 ## catkin specific configuration ##
@@ -83,8 +79,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES bupigo_msgs
-  CATKIN_DEPENDS message_runtime
+#  LIBRARIES blobs_to_pucks
+#  CATKIN_DEPENDS bupigo_msgs
 #  DEPENDS system_lib
 )
 
@@ -95,21 +91,24 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a cpp library
-# add_library(bupigo_msgs
-#   src/${PROJECT_NAME}/bupigo_msgs.cpp
+# add_library(blobs_to_pucks
+#   src/${PROJECT_NAME}/blobs_to_pucks.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(bupigo_msgs_node src/bupigo_msgs_node.cpp)
+# add_executable(blobs_to_pucks_node src/blobs_to_pucks_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(bupigo_msgs_node bupigo_msgs_generate_messages_cpp)
+# add_dependencies(blobs_to_pucks_node blobs_to_pucks_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(bupigo_msgs_node
+# target_link_libraries(blobs_to_pucks_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -128,7 +127,7 @@ catkin_package(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS bupigo_msgs bupigo_msgs_node
+# install(TARGETS blobs_to_pucks blobs_to_pucks_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -153,7 +152,7 @@ catkin_package(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_bupigo_msgs.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_blobs_to_pucks.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
