@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     rospy.init_node('colors_to_pucks')
     
-    calib_dir = rospkg.RosPack().get_path('arbot_calib')
+    calib_dir = rospkg.RosPack().get_path('bupigo_calib')
     [Xi, Yi, Xr, Yr] = readCorrespondences(\
             calib_dir + '/scripts/interpolated_correspondences.csv')
 

@@ -23,9 +23,9 @@
 
 import rospy
 from ros_arduino_python.arduino_driver import Arduino
-from ros_arduino_python.arduino_sensors import *
+#from ros_arduino_python.arduino_sensors import *
 from ros_arduino_msgs.srv import *
-from ros_arduino_python.base_controller import BaseController
+#from ros_arduino_python.base_controller import BaseController
 # AV
 from ros_arduino_python.bupigo_controller import BuPiGoController
 from ros_arduino_python.rtbot_controller import RTbotController
@@ -52,40 +52,40 @@ class ArduinoROS():
 
         # Rate at which summary SensorState message is published. Individual sensors publish
         # at their own rates.        
-        self.sensorstate_rate = int(rospy.get_param("~sensorstate_rate", 10))
+#        self.sensorstate_rate = int(rospy.get_param("~sensorstate_rate", 10))
         
-        self.use_base_controller = rospy.get_param("~use_base_controller", False)
+#        self.use_base_controller = rospy.get_param("~use_base_controller", False)
         # AV
         self.use_bupigo_controller = rospy.get_param("~use_bupigo_controller", False)
         self.use_rtbot_controller = rospy.get_param("~use_rtbot_controller", False)
         self.use_arbot_controller = rospy.get_param("~use_arbot_controller", False)
         
         # Set up the time for publishing the next SensorState message
-        now = rospy.Time.now()
-        self.t_delta_sensors = rospy.Duration(1.0 / self.sensorstate_rate)
-        self.t_next_sensors = now + self.t_delta_sensors
+#        now = rospy.Time.now()
+#        self.t_delta_sensors = rospy.Duration(1.0 / self.sensorstate_rate)
+#        self.t_next_sensors = now + self.t_delta_sensors
         
         # Initialize a Twist message
         self.cmd_vel = Twist()
   
         # A cmd_vel publisher so we can stop the robot when shutting down
-        self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+        self.cmd_vel_pub = rospy.Publisher('bupigo_cmd_vel', Twist, queue_size=10)
         
         # The SensorState publisher periodically publishes the values of all sensors on
         # a single topic.
-        self.sensorStatePub = rospy.Publisher('~sensor_state', SensorState, queue_size=10)
+#        self.sensorStatePub = rospy.Publisher('~sensor_state', SensorState, queue_size=10)
         
         # A service to position a PWM servo
-        rospy.Service('~servo_write', ServoWrite, self.ServoWriteHandler)
+#        rospy.Service('~servo_write', ServoWrite, self.ServoWriteHandler)
         
         # A service to read the position of a PWM servo
-        rospy.Service('~servo_read', ServoRead, self.ServoReadHandler)
+#        rospy.Service('~servo_read', ServoRead, self.ServoReadHandler)
         
         # A service to turn set the direction of a digital pin (0 = input, 1 = output)
-        rospy.Service('~digital_set_direction', DigitalSetDirection, self.DigitalSetDirectionHandler)
+#        rospy.Service('~digital_set_direction', DigitalSetDirection, self.DigitalSetDirectionHandler)
         
         # A service to turn a digital sensor on or off
-        rospy.Service('~digital_write', DigitalWrite, self.DigitalWriteHandler)
+#        rospy.Service('~digital_write', DigitalWrite, self.DigitalWriteHandler)
 
         # Initialize the controlller
         self.controller = Arduino(self.port, self.baud, self.timeout)
@@ -99,42 +99,42 @@ class ArduinoROS():
         mutex = thread.allocate_lock()
 
         # Initialize any sensors
-        self.mySensors = list()
-        
-        sensor_params = rospy.get_param("~sensors", dict({}))
-        
-        for name, params in sensor_params.iteritems():
-            # Set the direction to input if not specified
-            try:
-                params['direction']
-            except:
-                params['direction'] = 'input'
-                
-            if params['type'] == "Ping":
-                sensor = Ping(self.controller, name, params['pin'], params['rate'])
-            elif params['type'] == "GP2D12":
-                sensor = GP2D12(self.controller, name, params['pin'], params['rate'])
-            elif params['type'] == 'Digital':
-                sensor = DigitalSensor(self.controller, name, params['pin'], params['rate'], direction=params['direction'])
-            elif params['type'] == 'Analog':
-                sensor = AnalogSensor(self.controller, name, params['pin'], params['rate'], direction=params['direction'])
-            elif params['type'] == 'PololuMotorCurrent':
-                sensor = PololuMotorCurrent(self.controller, name, params['pin'], params['rate'])
-            elif params['type'] == 'PhidgetsVoltage':
-                sensor = PhidgetsVoltage(self.controller, name, params['pin'], params['rate'])
-            elif params['type'] == 'PhidgetsCurrent':
-                sensor = PhidgetsCurrent(self.controller, name, params['pin'], params['rate'])
-                
-#                if params['type'] == "MaxEZ1":
-#                    self.sensors[len(self.sensors)]['trigger_pin'] = params['trigger_pin']
-#                    self.sensors[len(self.sensors)]['output_pin'] = params['output_pin']
-
-            self.mySensors.append(sensor)
-            rospy.loginfo(name + " " + str(params))
+#        self.mySensors = list()
+#        
+#        sensor_params = rospy.get_param("~sensors", dict({}))
+#        
+#        for name, params in sensor_params.iteritems():
+#            # Set the direction to input if not specified
+#            try:
+#                params['direction']
+#            except:
+#                params['direction'] = 'input'
+#                
+#            if params['type'] == "Ping":
+#                sensor = Ping(self.controller, name, params['pin'], params['rate'])
+#            elif params['type'] == "GP2D12":
+#                sensor = GP2D12(self.controller, name, params['pin'], params['rate'])
+#            elif params['type'] == 'Digital':
+#                sensor = DigitalSensor(self.controller, name, params['pin'], params['rate'], direction=params['direction'])
+#            elif params['type'] == 'Analog':
+#                sensor = AnalogSensor(self.controller, name, params['pin'], params['rate'], direction=params['direction'])
+#            elif params['type'] == 'PololuMotorCurrent':
+#                sensor = PololuMotorCurrent(self.controller, name, params['pin'], params['rate'])
+#            elif params['type'] == 'PhidgetsVoltage':
+#                sensor = PhidgetsVoltage(self.controller, name, params['pin'], params['rate'])
+#            elif params['type'] == 'PhidgetsCurrent':
+#                sensor = PhidgetsCurrent(self.controller, name, params['pin'], params['rate'])
+#                
+##                if params['type'] == "MaxEZ1":
+##                    self.sensors[len(self.sensors)]['trigger_pin'] = params['trigger_pin']
+##                    self.sensors[len(self.sensors)]['output_pin'] = params['output_pin']
+#
+#            self.mySensors.append(sensor)
+#            rospy.loginfo(name + " " + str(params))
               
         # Initialize the base controller if used
-        if self.use_base_controller:
-            self.myBaseController = BaseController(self.controller)
+#        if self.use_base_controller:
+#            self.myBaseController = BaseController(self.controller)
 
         # AV - Initialize the bupigo controller if used
         if self.use_bupigo_controller:
@@ -150,15 +150,15 @@ class ArduinoROS():
     
         # Start polling the sensors and base controller
         while not rospy.is_shutdown():
-            for sensor in self.mySensors:
-                mutex.acquire()
-                sensor.poll()
-                mutex.release()
+#            for sensor in self.mySensors:
+#                mutex.acquire()
+#                sensor.poll()
+#                mutex.release()
                     
-            if self.use_base_controller:
-                mutex.acquire()
-                self.myBaseController.poll()
-                mutex.release()
+#            if self.use_base_controller:
+#                mutex.acquire()
+#                self.myBaseController.poll()
+#                mutex.release()
 
             # AV - Start
             if self.use_bupigo_controller:
@@ -180,38 +180,38 @@ class ArduinoROS():
             # Publish all sensor values on a single topic for convenience
             now = rospy.Time.now()
             
-            if now > self.t_next_sensors:
-                msg = SensorState()
-                msg.header.frame_id = 'base_link'
-                msg.header.stamp = now
-                for i in range(len(self.mySensors)):
-                    msg.name.append(self.mySensors[i].name)
-                    msg.value.append(self.mySensors[i].value)
-                try:
-                    self.sensorStatePub.publish(msg)
-                except:
-                    pass
-                
-                self.t_next_sensors = now + self.t_delta_sensors
+#            if now > self.t_next_sensors:
+#                msg = SensorState()
+#                msg.header.frame_id = 'base_link'
+#                msg.header.stamp = now
+#                for i in range(len(self.mySensors)):
+#                    msg.name.append(self.mySensors[i].name)
+#                    msg.value.append(self.mySensors[i].value)
+#                try:
+#                    self.sensorStatePub.publish(msg)
+#                except:
+#                    pass
+#                
+#                self.t_next_sensors = now + self.t_delta_sensors
             
-            r.sleep()
+#            r.sleep()
     
-    # Service callback functions
-    def ServoWriteHandler(self, req):
-        self.controller.servo_write(req.id, req.value)
-        return ServoWriteResponse()
-    
-    def ServoReadHandler(self, req):
-        self.controller.servo_read(req.id)
-        return ServoReadResponse()
-    
-    def DigitalSetDirectionHandler(self, req):
-        self.controller.pin_mode(req.pin, req.direction)
-        return DigitalSetDirectionResponse()
-    
-    def DigitalWriteHandler(self, req):
-        self.controller.digital_write(req.pin, req.value)
-        return DigitalWriteResponse()
+#    # Service callback functions
+#    def ServoWriteHandler(self, req):
+#        self.controller.servo_write(req.id, req.value)
+#        return ServoWriteResponse()
+#    
+#    def ServoReadHandler(self, req):
+#        self.controller.servo_read(req.id)
+#        return ServoReadResponse()
+#    
+#    def DigitalSetDirectionHandler(self, req):
+#        self.controller.pin_mode(req.pin, req.direction)
+#        return DigitalSetDirectionResponse()
+#    
+#    def DigitalWriteHandler(self, req):
+#        self.controller.digital_write(req.pin, req.value)
+#        return DigitalWriteResponse()
                
     def shutdown(self):
         # Stop the robot

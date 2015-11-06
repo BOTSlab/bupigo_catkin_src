@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_key" output="screen"> 
+        <remap from="/cmd_vel" to="/bupigo_cmd_vel"/>
+    </node>
+</launch>

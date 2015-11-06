@@ -45,10 +45,10 @@ class BuPiGoController:
         rospy.Subscriber("bupigo_servo_angle", UInt8, self.bupigoSetServoCallback)
 
         # Setup blob publisher
-        self.blob_publisher = rospy.Publisher('bupigo_blobs', Blobs, queue_size=10)
+        self.blob_publisher = rospy.Publisher('bupigo_blobs', Blobs, queue_size=1)
 
         # Setup the odometry broadcaster
-        self.odomPub = rospy.Publisher('odom', Odometry, queue_size=10)
+        self.odomPub = rospy.Publisher('odom', Odometry, queue_size=1)
         self.odomBroadcaster = TransformBroadcaster()
         
     def poll(self):

@@ -29,7 +29,7 @@ import os
 import time
 import sys, traceback
 from serial.serialutil import SerialException
-#from bupigo_msgs.msg import Blobs, Blob
+from bupigo_msgs.msg import Blobs, Blob
 from serial import Serial
 
 SERVO_MAX = 180
@@ -215,6 +215,7 @@ class Arduino:
             values = self.recv_array()
             while attempts < ntries and (values == '' or values == 'Invalid Command' or values == [] or values == None):
                 try:
+                    print("RETRYING: " + cmd)
                     self.port.flushInput()
                     self.port.write(cmd + '\r')
                     values = self.recv_array()
@@ -362,22 +363,28 @@ class Arduino:
         if number_of_blobs is 0:
             return blobs
         for i in range(0, number_of_blobs):
-            blob_data = self.execute_array('h {0}'.format(i))
-            blob = Blob()
-            #print blob_data[0]
-            #print blob_data[1]
-            #print blob_data[2]
-            #print blob_data[3]
-            #print blob_data[4]
-            blob.type = blob_data[0]
-            blob.x = int(blob_data[1])
-            blob.y = int(blob_data[2])
-            blob.area = int(blob_data[3]) * int(blob_data[4])
-            blob.left = blob.x - int(blob_data[3])/2
-            blob.right = blob.x + int(blob_data[3])/2
-            blob.bottom = blob.y + int(blob_data[4])/2
-            blob.top = blob.y - int(blob_data[4])/2
-            blobs.blobs.append(blob)
+            try:
+                blob_data = self.execute_array('h {0}'.format(i))
+                blob = Blob()
+                #print blob_data[0]
+                #print blob_data[1]
+                #print blob_data[2]
+                #print blob_data[3]
+                #print blob_data[4]
+                blob.type = blob_data[0]
+                blob.x = int(blob_data[1])
+                blob.y = int(blob_data[2])
+                blob.area = int(blob_data[3]) * int(blob_data[4])
+                blob.left = blob.x - int(blob_data[3])/2
+                blob.right = blob.x + int(blob_data[3])/2
+                blob.bottom = blob.y + int(blob_data[4])/2
+                blob.top = blob.y - int(blob_data[4])/2
+                blobs.blobs.append(blob)
+            except IndexError:
+                print "IndexError in get_blobs (continuing anyway!)"
+                blobs.blobs = []
+                blobs.blob_count = 0
+        
         return blobs
 
     # AV - Stop
