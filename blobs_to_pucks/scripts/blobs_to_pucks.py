@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 """
-    This node uses the published data from the pixy to create pucks
-    
-    It is not very sophisticated, and simply looks up most of the information and creates objects and publishes the array of them
+    This node subscribes to /blobs and publishes /pucks and /vis_pucks (more
+suitable for rviz).  A Blob has a type and image coordinates, whereas a Puck
+also has coordinates in the robot's reference frame from the calibration
+process.
 """
 import cv
 import csv
@@ -62,16 +63,15 @@ def readCorrespondences(filename):
 if __name__ == '__main__':
     global puck_publisher, vis_pucks_publisher, corresDict
 
-    rospy.init_node('colors_to_pucks')
+    rospy.init_node('blobs_to_pucks')
     
-    calib_dir = rospkg.RosPack().get_path('bupigo_calib')
+    calib_dir = rospkg.RosPack().get_path('puck_calib')
     [Xi, Yi, Xr, Yr] = readCorrespondences(\
             calib_dir + '/scripts/interpolated_correspondences.csv')
 
     corresDict = {}
     for i in range(len(Xi)):
         corresDict[(Xi[i], Yi[i])] = (Xr[i], Yr[i])
-    
 
     puck_publisher = rospy.Publisher('/pucks', PuckArray)
 
@@ -79,6 +79,4 @@ if __name__ == '__main__':
 
     rospy.Subscriber('/blobs', Blobs, callback)
     
-
     rospy.spin()
-

@@ -105,4 +105,11 @@ class BuPiGoController:
         self.angularSpeed = cmd_vel.angular.z        # rad/s
 
     def bupigoSetServoCallback(self, msg):
-        self.arduino.bupigo_set_servo(msg.data)    
+        # For Arduino-controlled servo
+        # self.arduino.bupigo_set_servo(msg.data)    
+
+        # For Pi Servo Hat-controlled servo
+        #
+        # SCOTT INSERT CODE HERE 
+        #
+        

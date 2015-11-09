@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Demo which simply steers the robot towards pucks.
+Demo which simply steers the robot towards a blob.
 """
 import rospy
 from geometry_msgs.msg import Twist
@@ -23,7 +23,7 @@ def blobsCallback(blobs):
 
 if __name__ == '__main__':
     global pub
-    rospy.init_node('test')
+    rospy.init_node('move_to_blob')
     pub = rospy.Publisher('/bupigo_cmd_vel', Twist, queue_size=1)
     rospy.Subscriber('/bupigo_blobs', Blobs, blobsCallback)
     rospy.spin()
