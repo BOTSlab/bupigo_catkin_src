@@ -18,7 +18,7 @@ import common_picking
 import common_calib
 
 def main():
-    image_filename = '320_200.png'
+    image_filename = 'pixy.png'
     filename_out = 'known_correspondences.csv'
 
     robotCoords = []

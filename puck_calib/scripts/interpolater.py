@@ -15,7 +15,7 @@ import numpy as np
 from numpy.ma import masked
 
 def main():
-    interpolate('known_correspondences.csv', (640, 480))
+    interpolate('known_correspondences.csv', (318, 198))
     
 def interpolate(filename_in, (width, height)):
 
